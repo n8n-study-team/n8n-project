@@ -1,0 +1,30 @@
+# Maven 빌드 결과물 및 임시 파일
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timings.properties
+
+# 이클립스 프로젝트 파일
+.classpath
+.project
+.settings/
+
+# 이클립스 워크스페이스 관련
+.metadata/
+.semaphore/
+.project.lock
+
+# IDE 관련 파일(IntelliJ/STS 등)
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# 기타(로그, 임시 파일)
+*.log
+*.tmp
