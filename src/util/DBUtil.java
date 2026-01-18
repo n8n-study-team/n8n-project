@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 public class DBUtil {
 	private static Properties dbinfo = new Properties();
 	
+	private DBUtil() {}
+	
 	// mysql driver 로드
 	static {
 		try {
