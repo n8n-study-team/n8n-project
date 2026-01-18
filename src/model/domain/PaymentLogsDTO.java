@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class PaymentLogDTO {
+public class PaymentLogsDTO{
 	private Integer logId;         // log_id (PK, auto_increment)
     private String cardNumber;     // card_number
     private BigDecimal amount;     // decimal(10,0) -> 오차 없이 계산되는 BigDecimal 객체 사용
