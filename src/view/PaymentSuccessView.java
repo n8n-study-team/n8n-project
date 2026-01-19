@@ -1,3 +1,7 @@
+// PaymentSuccessView
+//	- 모든 성공 메세지를 콘솔에 보여주는 view입니다.
+// 	- 추후 인터페이스로 디벨롭하는 것도 좋을 것 같습니다.
+
 package view;
 
 public class PaymentSuccessView {

@@ -1,3 +1,6 @@
+// PaymentLogsDTO
+// 	- DB의 payment_logs 테이블의 칼럼과 매핑되는 필드를 갖는 클래스입니다.
+
 package model.domain;
 
 import java.math.BigDecimal;
