@@ -1,3 +1,6 @@
+// PaymentStartView
+//	- 해당 앱의 진입점으로 이곳에서 모든 것이 시작됩니다.
+
 package view;
 
 import controller.PaymentController;

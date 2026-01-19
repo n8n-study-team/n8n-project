@@ -1,3 +1,7 @@
+// DBUtil 
+// 	- DB 자원을 활용하기 위한 기본적인 준비를 담당합니다.(DB 설정파일 읽기, DB 자원 해제 등)
+// 	- DB와 연결하는 로직이 아닙니다.
+
 package util;
 
 import java.io.FileInputStream;
