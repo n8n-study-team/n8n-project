@@ -1,3 +1,6 @@
+// RandomUtil
+// 	- 랜덤 결제 정보를 생성하기 위한 메서드를 정의합니다.
+
 package util;
 
 import java.util.Random;
