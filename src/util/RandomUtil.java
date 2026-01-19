@@ -2,11 +2,11 @@ package util;
 
 import java.util.Random;
 
-public class GenRandom {
+public class RandomUtil {
 	
 	public static final Random random = new Random();
 	
-	private GenRandom() {}
+	private RandomUtil() {}
 	
     public static String generateRandomCardNumber() {
         return String.format("%04d-****-****-%04d", 
