@@ -1,3 +1,7 @@
+// PaymentLogsDAO
+// 	- DB와 연결하고 쿼리를 수행하는 역할만 하는 클래스입니다.
+// 	- 비즈니스 로직을 담당하는 클래스가 아닙니다.
+
 package model.dao;
 
 import java.sql.Connection;
@@ -8,49 +12,37 @@ import lombok.extern.slf4j.Slf4j;
 import java.sql.SQLException;
 
 import util.DBUtil;
-import util.RandomUtil;
+import model.domain.RanDataDTO;
 
 @Slf4j
 public class PaymentLogsDAO {
 
 	// 랜덤 거래 내역을 만들어 DB에 적재하는 메서드
-	public static boolean simulatePayment() throws SQLException {
+	public static boolean simulatePayment(RanDataDTO ranData) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
 			con = DBUtil.getConnection();
 
-			// 랜덤 데이터 생성
-			String cardNum = RandomUtil.generateRandomCardNumber();
-			int amount = (RandomUtil.random.nextInt(100) + 1) * 1000; // 1,000 ~ 100,000원
-			String merchant = RandomUtil.getRandomMerchant();
-
-			// 고의적인 에러 발생 로직 (20% 확률로 실패)
-			boolean isFail = RandomUtil.random.nextInt(5) == 0; // 0~4 중 0이 나오면 실패
-
-			String status = isFail ? "FAIL" : "SUCCESS";
-			String errorCode = isFail ? RandomUtil.getRandomErrorCode() : null;
-			String message = isFail ? "결제 승인 거절됨 (" + errorCode + ")" : "결제 정상 승인";
-
 			// DB에 로그 적재 (INSERT)
 			String insertQuery = "INSERT INTO payment_logs (card_number, amount, merchant_name, status, message) VALUES (?, ?, ?, ?, ?)";
 
 			pstmt = con.prepareStatement(insertQuery);
-			pstmt.setString(1, cardNum);
-			pstmt.setInt(2, amount);
-			pstmt.setString(3, merchant);
-			pstmt.setString(4, status);
-			pstmt.setString(5, message); // 에러 메시지 or 성공 메시지
+			pstmt.setString(1, ranData.getCardNum());
+			pstmt.setInt(2, ranData.getAmount());
+			pstmt.setString(3, ranData.getMerchant());
+			pstmt.setString(4, ranData.getStatus());
+			pstmt.setString(5, ranData.getMessage()); // 에러 메시지 or 성공 메시지
 
 			// 쿼리 실행 후 리턴 값이 1이면 성공, 0이면 예외 발생
 			int queryResult = pstmt.executeUpdate();
 
 			if (queryResult == 1) {
-				if (isFail) {
-					log.warn("🚨 [결제실패] {}원 / 사유: {}", amount, errorCode);
+				if (ranData.isFail()) {
+					log.warn("🚨 [결제실패] {}원 / 사유: {}", ranData.getAmount(), ranData.getErrorCode());
 				} else {
-					log.info("✅ [결제성공] {}원 / 가맹점: {}", amount, merchant);
+					log.info("✅ [결제성공] {}원 / 가맹점: {}", ranData.getAmount(), ranData.getErrorCode());
 				}
 
 				return true;

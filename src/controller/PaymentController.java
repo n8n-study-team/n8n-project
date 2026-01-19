@@ -1,9 +1,15 @@
+// PaymentController
+// 	- view와 model 사이에 위치하여 중개합니다.
+// 	- service 로직을 호출하고 결과를 view에 전달하는 역할을 합니다.
+
 package controller;
 
 import java.sql.SQLException;
 
 import lombok.extern.slf4j.Slf4j;
 import model.dao.PaymentLogsDAO;
+import model.domain.RanDataDTO;
+import model.service.PaymentService;
 import view.PaymentFailView;
 import view.PaymentSuccessView;
 
@@ -16,7 +22,10 @@ public class PaymentController {
 		try {
 			// 무한 루프를 돌면서 결제 시뮬레이션 (3초 간격)
 			while (true) {
-				boolean r = PaymentLogsDAO.simulatePayment();
+				RanDataDTO ranData = PaymentService.genRandomPayment();
+				
+				boolean r = PaymentLogsDAO.simulatePayment(ranData);
+				
 				if (r == true) {
 					PaymentSuccessView.printMsg("DB 저장 성공");
 					Thread.sleep(3000); // 3초 대기
