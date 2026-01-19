@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.sql.SQLException;
 
 import util.DBUtil;
-import util.GenRandom;
+import util.RandomUtil;
 
 @Slf4j
 public class PaymentLogsDAO {
@@ -22,15 +22,15 @@ public class PaymentLogsDAO {
 			con = DBUtil.getConnection();
 
 			// 랜덤 데이터 생성
-			String cardNum = GenRandom.generateRandomCardNumber();
-			int amount = (GenRandom.random.nextInt(100) + 1) * 1000; // 1,000 ~ 100,000원
-			String merchant = GenRandom.getRandomMerchant();
+			String cardNum = RandomUtil.generateRandomCardNumber();
+			int amount = (RandomUtil.random.nextInt(100) + 1) * 1000; // 1,000 ~ 100,000원
+			String merchant = RandomUtil.getRandomMerchant();
 
 			// 고의적인 에러 발생 로직 (20% 확률로 실패)
-			boolean isFail = GenRandom.random.nextInt(5) == 0; // 0~4 중 0이 나오면 실패
+			boolean isFail = RandomUtil.random.nextInt(5) == 0; // 0~4 중 0이 나오면 실패
 
 			String status = isFail ? "FAIL" : "SUCCESS";
-			String errorCode = isFail ? GenRandom.getRandomErrorCode() : null;
+			String errorCode = isFail ? RandomUtil.getRandomErrorCode() : null;
 			String message = isFail ? "결제 승인 거절됨 (" + errorCode + ")" : "결제 정상 승인";
 
 			// DB에 로그 적재 (INSERT)
