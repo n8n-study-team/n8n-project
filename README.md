@@ -2,7 +2,8 @@
 
 > **프로젝트 목표**
 >
-> 본 프로젝트는 지금까지 학습한 **JDBC, MVC 패턴, MySQL, Docker** 기술을 종합적으로 복습하고, **n8n** 자동화 도구를 새롭게 도입하여 가상의 카드 결제 알림 시스템을 구축하는 것을 목적으로 한다. 이를 통해 백엔드 로직 구현부터 데이터베이스 연동, 컨테이너 환경에서의 운영, 그리고 DevOps 관점의 로그 모니터링 및 알림 자동화까지의 전 과정을 경험한다.
+> 본 프로젝트는 지금까지 학습한 **JDBC, MVC 패턴, MySQL, Docker** 기술을 종합적으로 복습하고, **n8n** 자동화 도구를 새롭게 도입하여 가상의 카드 결제 알림 시스템을 구축하는 것을 목적으로 한다.\
+> 이를 통해 백엔드 로직 구현부터 데이터베이스 연동, 컨테이너 환경에서의 운영, 그리고 DevOps 관점의 로그 모니터링 및 알림 자동화까지의 전 과정을 경험한다.
 
 ---
 
@@ -21,7 +22,7 @@
 ### 3) 기획 의도
 * **🏦 금융 IT 도메인 실습**: 우리 FISA(금융 IT 아카데미)의 특성을 살려 간이 결제 시스템을 구현한다.
 * **📚 배운 지식의 활용**: Java로 비즈니스 로직을 구현하고, JDBC를 통해 MySQL과 연동한다. 특히 '로그(Log) 기록'을 DB 기반으로 구현한다는 것에 의의를 둔다.
-* **♾️ DevOps 관점 적용**: `Cloud Engineering` 과정의 특성에 맞춰, 단순히 데이터를 쌓는 것을 넘어 로그를 분석하고 오류를 탐지하여 알림을 보내는 자동화 파이프라인을 구축한다.
+* **♾️ DevOps 관점 적용**: 클라우드 엔지니어링 과정의 특성에 맞춰, 단순히 데이터를 쌓는 것을 넘어 로그를 분석하고, 오류를 탐지하여, 알림을 보내는 자동화 파이프라인을 구축한다.
 
 ### 4) 핵심 기술 스택
 | 구분 | 기술 | 설명 |
@@ -49,7 +50,7 @@
 
 ## 3. 🏗️ 시스템 아키텍처
 
-본 프로젝트의 모든 서비스(MySQL, n8n)는 **Docker 컨테이너 환경**에서 구동된다.
+본 프로젝트의 모든 서비스(MySQL, n8n)는 **Docker 컨테이너 환경** 상에서 구동된다.
 
 ### 1) 기본 구조
 1.  **IDE**: Eclipse
@@ -180,7 +181,7 @@ services:
     volumes:
       - ./n8n_data:/home/node/.n8n   # 워크플로우 저장위치
     dns:                             # DNS 주소 지정
-      - 8.8.8.8                      # 구글 DNS 1 (Trouble Shooting2 참고)
+      - 8.8.8.8                      # 구글 DNS 1 (Trouble Shooting 2 참고)
       - 8.8.4.4                      # 구글 DNS 2
     depends_on:
       - mysql-db                     # DB가 켜진 후 실행
@@ -196,15 +197,18 @@ docker-compose up -d
 docker ps
 ```
 
-> 🚨 **Trouble Shooting1: 권한 문제**\
-> docker-compose up -d 후 n8n 컨테이너가 실행되지 않는다면, 로컬의 ./n8n_data 디렉토리 권한 문제일 가능성이 높다. n8n은 기본적으로 워크플로우를 저장하는 ./n8n_data 디렉토리를 root 권한으로 만들기 때문이다. 아래 명령어를 입력해, 해당 디렉토리에 모든 사용자 권한을 추가하여 다시 시도한다.
+> 🚨 **Trouble Shooting 1: 권한 문제**\
+> docker-compose up -d 후 n8n 컨테이너가 실행되지 않는다면, 로컬의 ./n8n_data 디렉토리 권한 문제일 가능성이 높다.\
+> n8n은 기본적으로 워크플로우를 저장하는 ./n8n_data 디렉토리를 root 권한으로 만들기 때문이다.\
+> 아래 명령어를 입력해, 해당 디렉토리에 모든 사용자 권한을 추가하여 다시 시도한다.
 ```bash
 sudo chmod -R 777 ./n8n_data
 ```
 
 #### 5) 가상머신 포트포워딩 설정
-> 🚨 **주의사항**
+> 🚨 **주의사항** \ 
 > 게스트 IP는 다를 수 있다. 본인 쉘에서 ip 주소를 필히 확인해야 한다.
+
 
 | 규칙 명 | 호스트 IP | 호스트 포트 | 게스트 IP(예시) | 게스트 포트 | 비고 |
 | --- | --- | --- | --- | --- | --- |
@@ -256,7 +260,7 @@ docker-compose up -d
 3. mysql 검색 후 continue
 4. 아래와 같이 입력 후 save
     - Host: `mysql-db`
-        - 주의사항: docker는 localhost일지라도 mysql host의 이름을 컨테이너의 이름으로 설정합니다. 반드시 localhost가 아니라 컨테이너 이름으로 입력하세요.
+        - 주의사항: docker상에서 mysql을 사용할 경우 반드시 host 이름에 container 이름이 들어가야 함.
     - Database: `fisa_db`
     - User: `root`
     - Passeord: `root`
@@ -272,20 +276,21 @@ docker-compose up -d
 6. 생성된 **Bot User OAuth Token** (`xoxb-`로 시작하는 값)을 복사
 7. n8n으로 돌아와서 **Credentials** -> **Slack API** 추가 -> `Access Token` 란에 붙여넣고 저장.
 
-> 🚨 **Trouble Shooting2: Slack Webhook 사용시 주의사항**\
->n8n에 slack 노드를 연결하는 것이 아니라 Slack api에서 webhook URL을 발급 받고 n8n에서 HTTP Request 노드에 연결하여 사용하는 방법도 있다. 다만 이 방법을 사용할 때, n8n 도커 컨테이너가 DNS 서버를 찾지 못하는 문제가 발생하기도 한다.
->
->`docker-compose down` 명령으로 컨테이너를 멈춘 후, `docker-compose.yml` 에 DNS 주소를 추가하고 다시 `docker-compose up -d` 하니 해결되었다.
->
-> 이와 달리 n8n에 Slack 노드를 연결하는 방식에서는 별도의 서버 오류가 발생하지 않았다. 따라서 본 프로젝트에서는 HTTP Request 노드에 Slack webhook URL을 연결하는 것이 아니라, Slack 노드를 연결하는 방식을 사용한다.
+> 🚨 **Trouble Shooting 2: Slack Webhook 사용시 주의사항**\
+> 
+> n8n에 slack 노드를 연결하는 것이 아닌, HTTP Request 노드에 Slack API에서 받은 Webhook url로 연결하여 사용하는 방법도 있다.\
+> 다만 이 방법을 사용할 때, n8n 도커 컨테이너가 DNS 서버를 찾지 못하는 문제가 발생할 수 있다.\
+> `docker-compose down` 명령으로 컨테이너를 멈춘 후, `docker-compose.yml` 에 DNS 주소를 추가하고 다시 작동시키니 해결되었다.\
+> 이와 달리 n8n에 Slack 노드를 연결하는 방식에서는 별도의 서버 오류가 발생하지 않았다.\
+> 따라서, 본 프로젝트에서는 HTTP Request 노드에 Slack webhook URL을 연결하는 것이 아니라, Slack 노드를 연결하는 방식을 사용한다.
 
 
 #### 6) n8n workflow 구성
 
 1. 결제 오류 발송 노드
     - `schedule trigger` 노드 추가
-        - trigger interval: `minutes` (분 단위로 작업을 반복 함)
-        - seconds between triggers: `1`(1분 단위로 작업을 반복 함)
+        - trigger interval: `minutes` (분 단위로 작업 반복)
+        - seconds between triggers: `1`(1분 간격으로 설정)
     - `mysql: execute a sql query` 노드 추가
         - Query 칸에 아래 sql을 입력
             
@@ -297,7 +302,7 @@ docker-compose up -d
             ```
             
     - `slack: send a message` 노드 추가
-        - **Credential:** 방금 만든 Slack 계정 선택.
+        - **Credential:** 방금 만든 Slack bot 계정 선택
         - **Resource:** `Message`, **Operation:** `Send` , **Send message to** : `Channel`
         - **Channel:** 알림 받을 채널 선택
         - **Message Type**: `Simple text message` 선택 후 아래 텍스트 입력
@@ -321,8 +326,8 @@ docker-compose up -d
             
 2. 결제 성공 발송 노드
     - `schedule trigger` 노드 추가
-        - trigger interval: `minutes` (분 단위로 작업을 반복 함)
-        - seconds between triggers: `10`(10분 단위로 작업을 반복 함)
+        - trigger interval: `minutes` (분 단위로 작업 반복)
+        - seconds between triggers: `10`(10분 간격으로 설정)
     - `mysql: execute a sql query` 노드 추가
         - Query 칸에 아래 sql을 입력
             
@@ -334,7 +339,7 @@ docker-compose up -d
             ```
             
     - `slack: send a message` 노드 추가
-        - **Credential:** 방금 만든 Slack 계정 선택.
+        - **Credential:** 방금 만든 Slack bot 계정 선택
         - **Resource:** `Message`, **Operation:** `Send` , **Send message to** : `Channel`
         - **Channel:** 알림 받을 채널 선택
         - **Message Type**: `Simple text message` 선택 후 아래 텍스트 입력
@@ -403,7 +408,7 @@ int amount = (random.nextInt(100) + 1) * 1000;
 ```
 
 - **작동 원리:**
-    - `nextInt(100)`: 0부터 99까지의 숫자를 뽑는다.
+    - `nextInt(100)`: 0부터 99까지의 랜덤한 정수가 나온다.
     - `+ 1`: 0원을 방지하고 최소 1단위를 만든다. (1~100)
     - `1000`: 천 원 단위로 만든다.
 - **결과:** 최소 1,000원에서 최대 100,000원 사이의 금액이 1,000원 단위로 생성된다. (예: 15,000원, 42,000원)
@@ -422,8 +427,8 @@ return merchants[random.nextInt(merchants.length)];
 
 - **작동 원리:**
     - 배열에 데이터가 6개 있다면 `length`는 6이다.
-    - `nextInt(6)`은 `0`부터 `5` 사이의 인덱스 번호를 준다.
-    - `merchants[2]` 와 같은 값이 나오며, 랜덤한 위치의 가게 이름을 꺼낸다.
+    - `nextInt(6)`은 0부터 5까지의 랜덤한 정수가 나온다.
+    - `merchants[2]` 와 같은 형태로, 랜덤한 index의 가게 이름을 꺼낸다.
 - **결과:** 6개의 가맹점 중 하나가 랜덤으로 나온다.
 - **에러 코드("잔액부족", "한도초과" 등)** 도 똑같은 방식으로 선택된다.
 
@@ -441,9 +446,9 @@ String.format("%04d-****-****-%04d",
 ```
 
 - **작동 원리:**
-    - `nextInt(9000)`: 0 ~ 8999 사이의 랜덤한 정수가 나온다.
-    - `+ 1000`: 더하면 **1000 ~ 9999** 범위가 된다. (무조건 4자리 숫자 보장)
-- **결과:** `1234-****-****-5678` 형태의 카드 번호 문자열이 완성된다.
+    - `nextInt(9000)`: 0부터 8999까지의 랜덤한 정수가 나온다.
+    - `+ 1000`: 그 결과에 더하면 **1000 ~ 9999** 범위의 정수가 된다. (무조건 4자리 숫자 보장)
+- **결과:** `1234-****-****-5678` 형태의 랜덤 카드 번호 문자열이 완성된다.
 
 ---
 
@@ -464,7 +469,8 @@ String.format("%04d-****-****-%04d",
 
 - **Model (모델)**: 애플리케이션의 **데이터**와 **비즈니스 로직**을 담당한다. 데이터베이스의 상태를 관리하고, 시스템의 핵심 규칙을 처리하는 부분이다.
 - **View (뷰)**: 사용자에게 보여지는 **화면(UI)** 을 담당한다. 모델이 처리한 데이터를 시각적으로 표현하거나, 사용자에게 알림을 출력하는 역할이다.
-- **Controller (컨트롤러)**: 사용자의 **요청(Input)** 을 받아 모델과 뷰를 연결하는 **지휘자** 역할을 한다. 무엇을 처리할지 모델에게 지시하고, 그 결과를 어떤 뷰로 보여줄지 결정한다.
+- **Controller (컨트롤러)**: 사용자의 **요청(Input)** 을 받아 모델과 뷰를 연결하는 **지휘자** 역할을 한다.\
+  무엇을 처리할지 모델에게 지시하고, 그 결과를 어떤 뷰로 보여줄지 결정한다.
 
 #### 2) MVC 패턴을 사용한 이유
 
@@ -515,7 +521,7 @@ n8n_project
 
 - **domain (DTO)**
     - `PaymentLogsDTO.java`: 데이터베이스의 `payment_log` 테이블과 1:1로 매핑되는 데이터 전송 객체이다.
-    - `RanDataDTO.java`: 랜덤 데이터 저장을 위한 필드를 담는 객체다.
+    - `RanDataDTO.java`: 랜덤 데이터 저장을 위한 필드를 담는 객체이다.
 - **dao (Data Access Object)**
     - `PaymentLogsDAO.java`: 데이터베이스(MySQL)에 직접 연결하여 `INSERT` SQL 쿼리를 실행하는 역할을 수행한다.
 - **service (Business Logic)**
@@ -534,18 +540,19 @@ n8n_project
 모델과 뷰를 연결하며, 프로젝트의 전체 흐름을 제어한다.
 
 - `PaymentController.java`
-    - `PaymentService`를 호출하여 비즈니스 로직(데이터 생성 및 저장)을 수행하도록 지시한다.
-    - 수행 결과에 따라 `PaymentSuccessView` 또는 `PaymentFailView`를 선택하여 결과를 화면에 띄운다.
+    1. `PaymentService`를 호출하여 비즈니스 로직(데이터 생성 및 저장)을 수행하도록 지시한다.
+    2. 수행 결과에 따라 `PaymentSuccessView` 또는 `PaymentFailView`를 선택하여 결과를 화면에 띄운다.
 
 #### 🟡 Util
 
 프로젝트 전반에서 공통적으로 사용되는 기능을 제공한다.
 
-- `DBUtil.java`: JDBC 드라이버 로딩 및 Connection 객체 생성/반환 등 중복되는 DB 연결 코드를 담당한다.
+- `DBUtil.java`: JDBC 드라이버 로딩 및 Connection 객체 생성/반환 등 중복되는 DB 연결 코드를 담고 있다.
 - `RandomUtil.java`: 상점 이름, 결제 상태, 카드 번호 등을 무작위로 추출하는 로직을 제공하여 `Service`의 코드를 간결하게 만든다.
 
 ## 7. 📸 프로젝트 결과 화면
-> Java 프로그램이 실행되는 동안 정상적으로 MySQL에 카드 결제 기록이 저장되고, n8n 워크플로우가 정상적으로 작동된다. 또한 주기적으로 Slack 채널에 결제 기록이 도착하고, 결제 오류 발생시 즉시 메시지가 도착하는 모습이다.
+> Java 프로그램이 실행되는 동안 정상적으로 MySQL에 카드 결제 기록이 저장되고, n8n 워크플로우가 정상적으로 작동된다.\
+> 또한 주기적으로 Slack 채널에 결제 기록이 도착하고, 결제 오류 발생시 즉시 메시지가 도착하는 모습이다.
 
 ![image.png](./assets/final.png)
 
