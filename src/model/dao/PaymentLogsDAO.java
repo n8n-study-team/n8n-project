@@ -42,7 +42,7 @@ public class PaymentLogsDAO {
 				if (ranData.isFail()) {
 					log.warn("🚨 [결제실패] {}원 / 사유: {}", ranData.getAmount(), ranData.getErrorCode());
 				} else {
-					log.info("✅ [결제성공] {}원 / 가맹점: {}", ranData.getAmount(), ranData.getErrorCode());
+					log.info("✅ [결제성공] {}원 / 가맹점: {}", ranData.getAmount(), ranData.getMerchant());
 				}
 
 				return true;
