@@ -534,8 +534,8 @@ n8n_project
 모델과 뷰를 연결하며, 프로젝트의 전체 흐름을 제어한다.
 
 - `PaymentController.java`
-    1. `PaymentService`를 호출하여 비즈니스 로직(데이터 생성 및 저장)을 수행하도록 지시한다.
-    2. 수행 결과에 따라 `PaymentSuccessView` 또는 `PaymentFailView`를 선택하여 결과를 화면에 띄운다.
+    - `PaymentService`를 호출하여 비즈니스 로직(데이터 생성 및 저장)을 수행하도록 지시한다.
+    - 수행 결과에 따라 `PaymentSuccessView` 또는 `PaymentFailView`를 선택하여 결과를 화면에 띄운다.
 
 #### 🟡 Util
 
