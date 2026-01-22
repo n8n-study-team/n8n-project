@@ -197,7 +197,7 @@ docker-compose up -d
 docker ps
 ```
 
-> 🚨 **Trouble Shooting 1: 권한 문제**\
+> 🚨 **Trouble Shooting 1: 권한 문제** \
 > docker-compose up -d 후 n8n 컨테이너가 실행되지 않는다면, 로컬의 ./n8n_data 디렉토리 권한 문제일 가능성이 높다.\
 > n8n은 기본적으로 워크플로우를 저장하는 ./n8n_data 디렉토리를 root 권한으로 만들기 때문이다.\
 > 아래 명령어를 입력해, 해당 디렉토리에 모든 사용자 권한을 추가하여 다시 시도한다.
@@ -206,7 +206,7 @@ sudo chmod -R 777 ./n8n_data
 ```
 
 #### 5) 가상머신 포트포워딩 설정
-> 🚨 **주의사항** \ 
+> 🚨 **주의사항**\
 > 게스트 IP는 다를 수 있다. 본인 쉘에서 ip 주소를 필히 확인해야 한다.
 
 
@@ -260,7 +260,8 @@ docker-compose up -d
 3. mysql 검색 후 continue
 4. 아래와 같이 입력 후 save
     - Host: `mysql-db`
-        - 주의사항: docker상에서 mysql을 사용할 경우 반드시 host 이름에 container 이름이 들어가야 함.
+      > 🚨 **주의사항**\
+      > docker상에서 mysql을 사용할 경우 반드시 host 이름에 container 이름이 들어가야 한다.
     - Database: `fisa_db`
     - User: `root`
     - Passeord: `root`
@@ -277,7 +278,6 @@ docker-compose up -d
 7. n8n으로 돌아와서 **Credentials** -> **Slack API** 추가 -> `Access Token` 란에 붙여넣고 저장.
 
 > 🚨 **Trouble Shooting 2: Slack Webhook 사용시 주의사항**\
-> 
 > n8n에 slack 노드를 연결하는 것이 아닌, HTTP Request 노드에 Slack API에서 받은 Webhook url로 연결하여 사용하는 방법도 있다.\
 > 다만 이 방법을 사용할 때, n8n 도커 컨테이너가 DNS 서버를 찾지 못하는 문제가 발생할 수 있다.\
 > `docker-compose down` 명령으로 컨테이너를 멈춘 후, `docker-compose.yml` 에 DNS 주소를 추가하고 다시 작동시키니 해결되었다.\
