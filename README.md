@@ -270,7 +270,7 @@ docker-compose up -d
       > docker상에서 mysql을 사용할 경우 반드시 host 이름에 container 이름이 들어가야 한다.
     - Database: `fisa_db`
     - User: `root`
-    - Passeord: `root`
+    - Password: `root`
     - Port: `3306`
 
 #### 5) Slack API 발급
