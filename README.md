@@ -53,11 +53,17 @@
 본 프로젝트의 모든 서비스(MySQL, n8n)는 **Docker 컨테이너 환경** 상에서 구동된다.
 
 ### 1) 기본 구조
-1.  **IDE**: Eclipse
-2.  **Build**: Maven
-3.  **DB**: MySQL (JDBC 연동)
-4.  **Logging**: slf4j + log4j2
-5.  **Notification**: n8n Slack Node
+
+| 구분 | 구성/도구 | 설명 |
+| :-- | :-- | :-- |
+| **IDE** | ![Eclipse](https://img.shields.io/badge/Eclipse-2C2255?style=flat-square&logo=eclipse&logoColor=white) | 개발 및 디버깅 환경 |
+| **빌드 도구** | ![Maven](https://img.shields.io/badge/Maven-C71A36?style=flat-square&logo=apachemaven&logoColor=white) | 의존성 관리 및 빌드 자동화 |
+| **데이터베이스** | ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white) ![JDBC](https://img.shields.io/badge/JDBC-316192?style=flat-square) | 결제 로그 저장소, JDBC로 연동 |
+| **로깅** | ![slf4j](https://img.shields.io/badge/slf4j-000000?style=flat-square) ![Log4j2](https://img.shields.io/badge/log4j2-CC0000?style=flat-square) | 애플리케이션 로그 수집/관리 |
+| **자동화/워크플로우** | ![n8n](https://img.shields.io/badge/n8n-FF6584?style=flat-square&logo=n8n&logoColor=white) | DB 모니터링 및 Slack 알림 자동화 워크플로우 실행 |
+| **컨테이너화** | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white) ![docker-compose](https://img.shields.io/badge/docker--compose-2C9BEF?style=flat-square&logo=docker&logoColor=white) | MySQL, n8n, 애플리케이션을 컨테이너로 배포/운영 |
+| **알림 채널** | ![Slack](https://img.shields.io/badge/Slack-4A154B?style=flat-square&logo=slack&logoColor=white) | 결제 성공/실패 알림 수신 채널 |
+
 
 ### 2) 데이터베이스 스키마
 결제 정보를 저장하기 위한 `payment_logs` 테이블 구조는 다음과 같다.
