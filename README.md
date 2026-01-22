@@ -2,43 +2,48 @@
 
 > **프로젝트 목표**
 >
-> 본 프로젝트는 지금까지 학습한 **JDBC, MVC 패턴, MySQL, Docker** 기술을 종합적으로 복습하고, **n8n** 자동화 도구를 새롭게 도입하여 가상의 카드 결제 알림 시스템을 구축하는 것을 목적으로 한다. 이를 통해 백엔드 로직 구현부터 데이터베이스 연동, 컨테이너 환경 배포, 그리고 DevOps 관점의 로그 모니터링 및 알림 자동화까지의 전 과정을 경험한다.
+> 본 프로젝트는 지금까지 학습한 **JDBC, MVC 패턴, MySQL, Docker** 기술을 종합적으로 복습하고, **n8n** 자동화 도구를 새롭게 도입하여 가상의 카드 결제 알림 시스템을 구축하는 것을 목적으로 한다. 이를 통해 백엔드 로직 구현부터 데이터베이스 연동, 컨테이너 환경에서의 운영, 그리고 DevOps 관점의 로그 모니터링 및 알림 자동화까지의 전 과정을 경험한다.
 
 ---
 
 ## 1. 📝 프로젝트 개요
 
-### 1.1. 팀원 및 역할
+### 1) 팀원 소개
 
-### 1.2. 주제
+| <img src="https://avatars.githubusercontent.com/u/113874212?v=4" width="150" height="150" /> | <img src="https://avatars.githubusercontent.com/u/50224952?v=4" width="150" height="150" /> | <img src="https://avatars.githubusercontent.com/u/130548845?v=4" width="150" height="150" /> |
+| :------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------: |
+| **사재헌** | **이명진** | **이채유** |
+| [GitHub](https://github.com/Zaixian5) | [GitHub](https://github.com/septeratz) | [GitHub](https://github.com/chaeyuuu) |
+
+### 2) 주제
 카드 결제 시 발생하는 로그 데이터를 생성하고, 이를 모니터링하여 **Slack으로 결제 내역(성공/실패)을 실시간 발송**하는 시스템이다.
 
-### 1.3. 기획 의도
+### 3) 기획 의도
 * **🏦 금융 IT 도메인 실습**: 우리 FISA(금융 IT 아카데미)의 특성을 살려 간이 결제 시스템을 구현한다.
-* **📚 배운 지식의 활용**: Java로 비즈니스 로직을 구현하고, JDBC를 통해 MySQL과 연동한다. 강사님께서 강조하신 '로그(Log) 기록'을 DB 기반으로 구현한다.
+* **📚 배운 지식의 활용**: Java로 비즈니스 로직을 구현하고, JDBC를 통해 MySQL과 연동한다. 특히 '로그(Log) 기록'을 DB 기반으로 구현한다는 것에 의의를 둔다.
 * **♾️ DevOps 관점 적용**: `Cloud Engineering` 과정의 특성에 맞춰, 단순히 데이터를 쌓는 것을 넘어 로그를 분석하고 오류를 탐지하여 알림을 보내는 자동화 파이프라인을 구축한다.
 
-### 1.4. 핵심 기술 스택
+### 4) 핵심 기술 스택
 | 구분 | 기술 | 설명 |
 | :-- | :-- | :-- |
-| **Language** | ![Java](https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=openjdk&logoColor=white) | 결제 로직 구현 및 데이터 생성 |
+| **언어** | ![Java](https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=openjdk&logoColor=white) | 결제 로직 구현 및 데이터 생성 |
 | **DB** | ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white) | 결제 로그 저장 및 관리 |
-| **Automation** | ![n8n](https://img.shields.io/badge/n8n-FF6584?style=flat-square&logo=n8n&logoColor=white) | DB 모니터링 및 Slack 알림 자동화 |
-| **Infra** | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white) | 애플리케이션 및 DB 컨테이너화 |
-| **Communication** | ![Slack](https://img.shields.io/badge/Slack-4A154B?style=flat-square&logo=slack&logoColor=white) | 알림 수신 채널 |
+| **자동화 툴** | ![n8n](https://img.shields.io/badge/n8n-FF6584?style=flat-square&logo=n8n&logoColor=white) | DB 모니터링 및 Slack 알림 자동화 |
+| **인프라** | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white) | 애플리케이션 및 DB 컨테이너화 |
+| **알림 전송** | ![Slack](https://img.shields.io/badge/Slack-4A154B?style=flat-square&logo=slack&logoColor=white) | 알림 수신 채널 |
 
 ---
 
 ## 2. 🤖 n8n 도입 배경
 
-### n8n이란?
+### 1) n8n이란?
 사용자가 코드를 거의 작성하지 않고도 다양한 앱과 서비스를 연결해 업무를 자동화할 수 있는 **워크플로우 자동화 도구**이다. 노드(Node) 기반으로 각 기능을 연결하여 작업 순서를 정의할 수 있다.
 
-### 왜 n8n을 사용하는가?
+### 2) 왜 n8n을 사용하는가?
 1.  **DevOps & Backend 자동화**: 서버 모니터링 알림(CloudWatch, Grafana 연동), 간단한 백엔드 API 구성, GitHub 이슈 연동 등 개발 운영 효율을 높이는 데 최적화되어 있다.
 2.  **무료 자가 호스팅**: Docker 등을 통해 내 서버에 직접 올려 사용할 경우 비용 없이 활용 가능하다.
 3.  **개발자 친화적**: 단순 연결을 넘어 JavaScript를 활용한 복잡한 데이터 가공이 가능하다.
-4.  **차별점**: 최근 화두인 MCP(Model-Context Protocol)가 AI와 도구의 연결 표준이라면, n8n은 구체적인 **작업 로직(Workflow)을 실행**하는 데 초점을 맞춘다.
+4.  **MCP와의 차별점**: 최근 화두인 MCP(Model-Context Protocol)가 AI와 도구의 연결 표준이라면, n8n은 구체적인 **작업 로직(Workflow)을 실행**하는 데 초점을 맞춘다.
 
 ---
 
@@ -46,14 +51,14 @@
 
 본 프로젝트의 모든 서비스(MySQL, n8n)는 **Docker 컨테이너 환경**에서 구동된다.
 
-### 3.1. 기본 구조
+### 1) 기본 구조
 1.  **IDE**: Eclipse
 2.  **Build**: Maven
 3.  **DB**: MySQL (JDBC 연동)
 4.  **Logging**: slf4j + log4j2
 5.  **Notification**: n8n Slack Node
 
-### 3.2. 데이터베이스 스키마
+### 2) 데이터베이스 스키마
 결제 정보를 저장하기 위한 `payment_logs` 테이블 구조는 다음과 같다.
 
 ```sql
@@ -64,13 +69,12 @@ CREATE TABLE IF NOT EXISTS payment_logs (
     merchant_name VARCHAR(50),      -- 가맹점
     status VARCHAR(10),             -- SUCCESS, FAIL
     message VARCHAR(100),           -- 로그 메시지 (에러 원인 등)
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    -- 결제 시간
     is_alerted BOOLEAN DEFAULT FALSE -- Slack 알림 발송 여부
 );
 ```
----
 
-## 4. 결제 메세지 명세
+## 4. 💸 결제 메세지 명세
 
 ### 1) 가맹점 종류
 
@@ -121,8 +125,8 @@ CREATE TABLE IF NOT EXISTS payment_logs (
 금액: 85000원
 결제시각: 2026-01-19 17:49:01
 ```
-## 4. ⚙️ 환경 구성 (Setup)
-### 4.1. Docker 환경 (docker-compose)
+## 5. ⚙️ 환경 구성 (Setup)
+### 5.1. Docker 환경 (docker-compose)
 
 #### 1) 가상머신 생성
 
@@ -176,8 +180,8 @@ services:
     volumes:
       - ./n8n_data:/home/node/.n8n   # 워크플로우 저장위치
     dns:                             # DNS 주소 지정
-	    - 8.8.8.8                    # 구글 DNS 1 (Trouble Shooting2 참고)
-	    - 8.8.4.4                    # 구글 DNS 2
+	  - 8.8.8.8                      # 구글 DNS 1 (Trouble Shooting2 참고)
+	  - 8.8.4.4                      # 구글 DNS 2
     depends_on:
       - mysql-db                     # DB가 켜진 후 실행
 ```
@@ -208,7 +212,7 @@ sudo chmod -R 777 ./n8n_data
 | n8n docker | 127.0.0.1 | 5678 | 10.0.2.15 | 5678 |  |
 
 
-### 4.2. DB 환경 구성
+### 5.2. DB 환경 구성
 
 - `docker exec -it fisa-mysql mysql -u root -p` 명령으로 도커 컨테이너의 mysql 쉘로 이동
 - 아래 쿼리 문을 입력하여 테이블 생성
@@ -228,7 +232,7 @@ CREATE TABLE IF NOT EXISTS payment_logs (
 );
 ```
 
-### 4.3. n8n 환경 구성
+### 5.3. n8n 환경 구성
 
 #### 1) 컨테이너 실행
 
@@ -357,9 +361,9 @@ docker-compose up -d
 
 ![n8n-workflow.png](./assets/n8n-workflow.png)
 
-## 5. 💻 핵심 로직 및 세부 사항
+## 6. 💻 핵심 로직 및 세부 사항
 
-### 1. 비즈니스 로직(랜덤 결제 기록 생성) 명세
+### 6.1. 비즈니스 로직(랜덤 결제 기록 생성) 명세
 
 
 이 프로젝트에 적용된 랜덤 로직은 실제 결제 환경에서 일어날 법한 다양한 상황을 시뮬레이션하기 위해 설계되었다.
@@ -371,15 +375,17 @@ docker-compose up -d
 ---
 
 
-### 1) 🚨 장애 발생 시뮬레이션 (확률 제어 로직)
+#### 1) 장애 발생 시뮬레이션 (확률 제어 로직)
 
 이 프로젝트에서 가장 중요한 부분이다. n8n이 **"에러를 감지하고 슬랙을 보내는지"** 테스트하려면, 가끔 에러가 터져야 한다.
 
-`boolean isFail = random.nextInt(5) == 0;`
+```java
+boolean isFail = random.nextInt(5) == 0;
+```
 
 - **작동 원리:**
     - `random.nextInt(5)`는 `0` 이상 `5` 미만의 정수를 반환한다. (즉, 0, 1, 2, 3, 4 중 하나)
-    - 5개의 숫자 중 `0`이 나올 확률은 수학적으로 **1/5**, 즉 **20%**이다.
+    - 5개의 숫자 중 `0`이 나올 확률은 수학적으로 **1/5**, 즉 **20%** 이다.
 - **의미:**
     - 결제 5건 중 약 1건 꼴로 고의적인 결제 실패(FAIL)를 발생시킨다.
     - 나머지 80%는 정상 승인(SUCCESS)으로 처리된다.
@@ -388,11 +394,13 @@ docker-compose up -d
 ---
 
 
-### 2) 💰 결제 금액 랜덤 생성 (현실적인 금액)
+#### 2) 결제 금액 랜덤 생성
 
 1원, 2원 같은 비현실적인 금액이 아니라, 실제 카드 결제처럼 보이는 금액을 만든다.
 
-`int amount = (random.nextInt(100) + 1) * 1000;`
+```java
+int amount = (random.nextInt(100) + 1) * 1000;
+```
 
 - **작동 원리:**
     - `nextInt(100)`: 0부터 99까지의 숫자를 뽑는다.
@@ -403,30 +411,34 @@ docker-compose up -d
 ---
 
 
-### 3) 🏪 가맹점 및 에러 사유 랜덤 선택 (배열 인덱싱)
+#### 3) 가맹점 및 에러 사유 랜덤 선택 (배열 인덱싱)
 
-실제 존재하는 상호명과 존재할 법한 오류명들을 `random`을 활용하여 뽑고, 조합하여 결제 기록을 생성한다.
+실제 존재하는 상호명과 존재할 법한 오류명들을 미리 만들어 둔 배열에서 랜덤으로 뽑고, 조합하여 결제 기록을 생성한다.
 
-`String[] merchants = {"스타벅스", "GS25", "쿠팡", ...};
-return merchants[random.nextInt(merchants.length)];`
+```java
+String[] merchants = {"스타벅스", "GS25", "쿠팡", ...};
+return merchants[random.nextInt(merchants.length)];
+```
 
 - **작동 원리:**
     - 배열에 데이터가 6개 있다면 `length`는 6이다.
     - `nextInt(6)`은 `0`부터 `5` 사이의 인덱스 번호를 준다.
     - `merchants[2]` 와 같은 값이 나오며, 랜덤한 위치의 가게 이름을 꺼낸다.
-- **결과:** "스타벅스"가 나올 수도, "FISA구내식당"이 나올 수도 있다.
-- 에러 코드("잔액부족", "한도초과" 등)도 똑같은 방식으로 선택된다.
+- **결과:** 6개의 가맹점 중 하나가 랜덤으로 나온다.
+- **에러 코드("잔액부족", "한도초과" 등)** 도 똑같은 방식으로 선택된다.
 
 ---
 
 
-### 4) 💳 카드 번호 생성 (문자열 포맷팅)
+#### 4) 카드 번호 생성 (문자열 포맷팅)
 
 개인정보 보호를 위해 가운데 숫자를 가린(Masking) 카드 번호를 생성한다.
 
-`String.format("%04d-****-****-%04d", 
+```java
+String.format("%04d-****-****-%04d", 
         random.nextInt(9000) + 1000,  // 앞 4자리
-        random.nextInt(9000) + 1000); // 뒤 4자리`
+        random.nextInt(9000) + 1000); // 뒤 4자리
+```
 
 - **작동 원리:**
     - `nextInt(9000)`: 0 ~ 8999 사이의 랜덤한 정수가 나온다.
@@ -436,17 +448,15 @@ return merchants[random.nextInt(merchants.length)];`
 ---
 
 
-### 📊 요약: 이 로직이 만드는 시나리오
+#### 5) 예시: 이 로직이 만드는 시나리오
 
 이 Java 코드가 실행되는 동안 다음과 같은 일이 무작위로 반복된다.
 
 1. **80% 확률로:** "스타벅스"에서 "15,000원" 결제 **성공** (로그: INFO) → **DB 저장** → n8n에서 **성공 파이프라인 작동** → **슬랙 메시지 발송**
 2. **20% 확률로:** "쿠팡"에서 "52,000원" 결제 **실패**, 사유는 "잔액부족" (로그: WARN) → **DB 저장** → n8n에서 **실패 파이프라인 작동** → **🚨 슬랙 메시지 발송**
 
-이 랜덤성 덕분에 카드 내부적으로 존재하지 않는 다양한 상황을 재현할 수 있다.
 
-
-### 2. 디자인 패턴 명세
+### 6.2. 디자인 패턴 명세
 
 #### 1) MVC 패턴이란
 
@@ -534,7 +544,8 @@ n8n_project
 - `DBUtil.java`: JDBC 드라이버 로딩 및 Connection 객체 생성/반환 등 중복되는 DB 연결 코드를 담당한다.
 - `RandomUtil.java`: 상점 이름, 결제 상태, 카드 번호 등을 무작위로 추출하는 로직을 제공하여 `Service`의 코드를 간결하게 만든다.
 
-## 6. 📸 프로젝트 결과 화면
+## 7. 📸 프로젝트 결과 화면
+> Java 프로그램이 실행되는 동안 정상적으로 MySQL에 카드 결제 기록이 저장되고, n8n 워크플로우가 정상적으로 작동된다. 또한 주기적으로 Slack 채널에 결제 기록이 도착하고, 결제 오류 발생시 즉시 메시지가 도착하는 모습이다.
 
 ![image.png](./assets/final.png)
 
