@@ -196,7 +196,7 @@ docker-compose up -d
 docker ps
 ```
 
-> 🚨 **Trouble Shooting: 권한 문제**\
+> 🚨 **Trouble Shooting1: 권한 문제**\
 > docker-compose up -d 후 n8n 컨테이너가 실행되지 않는다면, 로컬의 ./n8n_data 디렉토리 권한 문제일 가능성이 높다. n8n은 기본적으로 워크플로우를 저장하는 ./n8n_data 디렉토리를 root 권한으로 만들기 때문이다. 아래 명령어를 입력해, 해당 디렉토리에 모든 사용자 권한을 추가하여 다시 시도한다.
 ```bash
 sudo chmod -R 777 ./n8n_data
@@ -272,7 +272,7 @@ docker-compose up -d
 6. 생성된 **Bot User OAuth Token** (`xoxb-`로 시작하는 값)을 복사
 7. n8n으로 돌아와서 **Credentials** -> **Slack API** 추가 -> `Access Token` 란에 붙여넣고 저장.
 
-> 🚨 **Trouble Shooting: Slack Webhook 사용시 주의사항**\
+> 🚨 **Trouble Shooting2: Slack Webhook 사용시 주의사항**\
 >n8n에 slack 노드를 연결하는 것이 아니라 Slack api에서 webhook URL을 발급 받고 n8n에서 HTTP Request 노드에 연결하여 사용하는 방법도 있다. 다만 이 방법을 사용할 때, n8n 도커 컨테이너가 DNS 서버를 찾지 못하는 문제가 발생하기도 한다.
 >
 >`docker-compose down` 명령으로 컨테이너를 멈춘 후, `docker-compose.yml` 에 DNS 주소를 추가하고 다시 `docker-compose up -d` 하니 해결되었다.
